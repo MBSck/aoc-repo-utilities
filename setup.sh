@@ -23,18 +23,15 @@ function create_day_dirs() {
 # Create a repository one folder up
 function create_repository() {
     cd ..
-    read -p "Enter your name: " NAME
-    read -p "Enter the year: " YEAR
-    read -p "Enter the SSH-address of the Github repository": GITHUB_REPO
-    FOLDER_NAME="advent-of-code-$YEAR"
-    mkdir $FOLDER_NAME; cd $FOLDER_NAME
+    echo "Setting up repository!"
+    mkdir $2; cd $2
     git init
     create_day_dirs
-    create_readme $NAME
-    git add .
-    git commit -m "Init commit"
-    git remote add origin $GITHUB_REPO
+    create_readme $1
+    git add .; git commit -m "Init commit"
+    git remote add origin $3
     git push --set-upstream origin master
+    echo "All done!"
 }
 
 create_repository $PERSON_LIST
