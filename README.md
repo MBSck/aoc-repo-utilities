@@ -17,8 +17,12 @@ Click here for a step by step guide to create a Github-token: [Github token crea
 When creating a Token, make sure to...
 
 * Choose the option to **Generate new token (classic)**
-* For the **scopes**, choose `admin::repo_hook` and `delete_repo`, `repo` should be
-  automatically selected
+* For the **scopes** choose:<br>
+-- `repo`: Including all drop-down options (should be selected when the parent)<br>
+-- `workflow`<br>
+-- `delete_repo`<br>
+
+Otherwise the script will not work
 
 ### 3. Get Info from AOC-Website
 Follow the steps in this repository [advent-readme-stars](https://github.com/k2bd/advent-readme-stars)

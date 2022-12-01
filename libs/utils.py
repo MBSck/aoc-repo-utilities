@@ -2,10 +2,11 @@ import os
 import shutil
 import getpass
 import datetime
+import subprocess
 
 from pathlib import Path
-import subprocess
 from typing import Optional
+
 from github import Github, AuthenticatedUser
 
 YEAR = datetime.datetime.now().year
@@ -112,7 +113,7 @@ def github_login():
 
     # NOTE: Lazyload of the user -> Avoids errors and makes API work?! WTF?!
     login = user.login
-    return user, login
+    return user, github_token
 
 
 def create_remote(user: AuthenticatedUser):
@@ -144,7 +145,7 @@ def create_github_secrets(repo, login: str):
     login: str
         The nickname of the Github-account
     """
-    user_id = input("Enter your user-id. If left blank defaults to Github-username: ")
+    user_id = input("Enter your user-id (If left blank defaults to Github-username): ")
     user_id = login if not user_id else user_id
     session_id = input("Enter your session-id: ")
     leaderboard_id = input("Enter your leaderboard-id: ")
@@ -157,13 +158,13 @@ def create_github_secrets(repo, login: str):
 
 def setup_remote() -> None:
     """This sets the remote up for pushing"""
-    user, login = github_login()
+    user, github_token = github_login()
     repo = create_remote(user)
-    create_github_secrets(repo, login)
-    return repo, login
+    create_github_secrets(repo, user.login)
+    return user.login, github_token
 
 
-def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
+def git_commit_and_push(repo_dir: Path, github_token: str, login: str) -> None:
     """Commits and pushes the repository
 
     Parameters
@@ -173,7 +174,9 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
     """
     git_init, git_add = ["git", "init"], ["git", "add", "."]
     git_commit = ["git", "commit", "-m", "Init commit"]
-    git_remote_add = ["git", "remote", "add", "origin", ssh_url]
+    token_push = f"https://{github_token}@github.com/{login}/{REPO_NAME}.git"
+    print(token_push)
+    git_remote_add = ["git", "remote", "add", "origin", token_push]
     git_push = ["git", "push", "--set-upstream", "origin", "master"]
     commands = [git_init, git_add, git_commit, git_remote_add, git_push]
 
@@ -186,5 +189,5 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
 
 
 if __name__ == "__main__":
-    print(get_repo_dir())
+    ...
 
