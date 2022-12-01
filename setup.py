@@ -7,16 +7,17 @@ if importlib.util.find_spec("github") is None:
     subprocess.check_call(["clear"])
 
 
+import os
 import sys
 import subprocess
 
-from libs.utils import create_repository, setup_remote
+from libs.utils import create_repository, setup_remote, git_commit_and_push
 
 
 def setup():
-    repo_dir = create_repository()
-    repo = setup_remote()
-    subprocess.run(["bash", "assets/git_push.sh", repo_dir, repo.ssh_url], check=True)
+    repo, login = setup_remote()
+    repo_dir = create_repository(login)
+    git_commit_and_push(repo_dir, repo.ssh_url)
 
 
 setup()

@@ -4,6 +4,7 @@ import getpass
 import datetime
 
 from pathlib import Path
+import subprocess
 from typing import Optional
 from github import Github, AuthenticatedUser
 
@@ -12,20 +13,20 @@ REPO_NAME = f"advent-of-code-{datetime.datetime.now().year}"
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
 
 
-def get_repo_dir(path: Optional[Path] = None) -> str:
+def get_repo_dir(repo_dir: Optional[Path] = None) -> str:
     """Sets the (to be created) repo's path to the home path if not otherwise specified
 
     Parameters
     ----------
-    repo_path: Path, optional
+    repo_dir: Path, optional
 
     Returns
     -------
     repo_path: str
     """
     parent_dir = os.environ["HOME"]\
-            if ((not path) or (not os.path.exists(path))) else path
-    return os.path.join(parent_dir, REPO_NAME)
+            if ((not repo_dir) or (not os.path.exists(repo_dir))) else repo_dir
+    return os.path.join(parent_dir, "Code", REPO_NAME)
 
 
 def create_yaml(repo_dir: Path):
@@ -50,8 +51,8 @@ def create_readme(repo_dir: Path, login: str) -> None:
     ----------
     repo_dir: Path
     """
-    with open(os.path.join(ASSETS_DIR, "readme_template.md")) as in_file,\
-            open(os.path.join(repo_dir, "README.md")) as out_file:
+    with open(os.path.join(ASSETS_DIR, "readme_template.md"), "r") as in_file,\
+            open(os.path.join(repo_dir, "README.md"), "w+") as out_file:
         out_file.write(f"{login}'s Advent of Code\n")
 
         for line in in_file:
@@ -59,31 +60,37 @@ def create_readme(repo_dir: Path, login: str) -> None:
 
 
 def create_day_folders(repo_dir: Path) -> None:
+    """Creates the folders for the days
+
+    Parameters
+    ----------
+    repo_dir: Path
+    """
     for number in range(1, 25):
         if number < 10:
             day_folder = f"Day-0{number}"
         else:
             day_folder = f"Day-{number}"
 
-    day_dir = os.path.join(repo_dir, day_folder)
+        day_dir = os.path.join(repo_dir, day_folder)
+        if not os.path.exists(day_dir):
+            os.makedirs(day_dir)
 
-    if not os.path.exists(day_dir):
-        os.makedirs(day_dir)
 
-
-def create_repository(path: Optional[Path] = None) -> None:
+def create_repository(login: str) -> None:
     """Creates the local repository
 
     Parameters
     ----------
-    path: Path, optional
-        The path, where the repository should be created
+    login: str
+        The nickname of the Github-account
     """
-    repo_dir = get_repo_dir(path=path)
+    path = input("Enter path for repository (if left empy then it will be $HOME/Code): ")
+    repo_dir = get_repo_dir(repo_dir=path)
     if not os.path.exists(repo_dir):
         os.makedirs(repo_dir)
     create_yaml(repo_dir)
-    create_readme(repo_dir)
+    create_readme(repo_dir, login)
     create_day_folders(repo_dir)
     return repo_dir
 
@@ -134,6 +141,7 @@ def create_github_secrets(repo, login: str):
     ----------
     repo
     login: str
+        The nickname of the Github-account
     """
     user_id = input("Enter your user-id. If left blank defaults to Github-username: ")
     user_id = login if not user_id else user_id
@@ -151,8 +159,25 @@ def setup_remote() -> None:
     user, login = github_login()
     repo = create_remote(user)
     create_github_secrets(repo, login)
-    return repo
+    return repo, login
+
+
+def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
+    """Commits and pushes the repository
+
+    Parameters
+    ----------
+    repo_dir: Path
+    ssh_url: str
+    """
+    commands = [f"cd {repo_dir}", "git init",
+                "git add .", "git commit -m 'Init commit'",
+                f"git remote add origin {ssh_url}",
+                "git push --set-upstream origin master"]
+    for command in commands:
+        subprocess.call(command, shell=True)
 
 
 if __name__ == "__main__":
     print(get_repo_dir())
+
