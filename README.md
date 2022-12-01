@@ -15,10 +15,10 @@ When creating a Token, make sure to...
 
 ### 2. Get Info from AOC-Website
 Follow the steps in this repository [advent-readme-stars](https://github.com/k2bd/advent-readme-stars)
-to procure the `userId`, `sessionCookie`. For `leaderboardId` ask the creator of the
-private leaderboard.
-
-> For the `leaderboardId` see the [main repository](https://github.com/MBSck/advent-of-code)
+to procure
+* The `userId`: https://github.com/k2bd/advent-readme-stars/#userid
+* The `sessionCookie`: https://github.com/k2bd/advent-readme-stars/#sessioncookie
+* For `leaderboardId` ask the creator of the private leaderboard
 
 ### 3. Execute script
 To automatically setup your (remote and local) Github repository for advent of code execute
