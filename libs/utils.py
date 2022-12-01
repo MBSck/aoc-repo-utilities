@@ -8,7 +8,7 @@ import subprocess
 from typing import Optional
 from github import Github, AuthenticatedUser
 
-YEAR = {datetime.datetime.now().year}
+YEAR = datetime.datetime.now().year
 REPO_NAME = f"advent-of-code-{YEAR}"
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
 
@@ -187,5 +187,4 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
 
 if __name__ == "__main__":
     print(get_repo_dir())
-    git_commit_and_push("", "")
 
