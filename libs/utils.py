@@ -170,16 +170,16 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
     repo_dir: Path
     ssh_url: str
     """
-    cd, git_init = ["cd", repo_dir], ["git", "init"]
-    git_add = ["git", "add", "."]
+    git_init, git_add = ["git", "init"], ["git", "add", "."]
     git_commit = ["git", "commit", "-m", '"Init commit"']
     git_remote_add = ["git", "remote", "add", "origin", ssh_url]
     git_push = ["git", "push", "--set-upstream", "origin", "master"]
-    commands = [cd, git_init, git_add, git_commit, git_remote_add, git_push]
+    commands = [git_init, git_add, git_commit, git_remote_add, git_push]
 
     for command in commands:
         try:
-            subprocess.run(command, check=True)
+            process = subprocess.Popen(command, cwd=repo_dir)
+            process.wait()
         except Exception:
             pass
 
