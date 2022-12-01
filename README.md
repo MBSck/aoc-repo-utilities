@@ -1,27 +1,30 @@
-# AOC Repository Creation Utilities
-Utilities to automatically create an advent of code repository with some nice Quality 
+# AOC (Advent-of-Code) Repository Creation Utilities
+Utilities to automatically create an advent of code repository with some nice Quality
 of Life
 
 ## Installation
-### 1. Create a Github repository
-Create a Github repository on the webpage and copy the SSH-address
+### 1. Create a Github [token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+> #### :warning: Treat this token as a password, because it is! :warning:
 
-### 2. Execute script
-> :warning: Make sure to set a github repository first
-(enable
-[SSH-connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
-with a public key) :warning:
+### 2. Get Info from AOC-Website
+Follow the steps in this [repository](https://github.com/k2bd/advent-readme-stars) for
+the `userId`, `sessionCookie`.
 
-To automatically setup your Github repository for advent of code execute
+For the `leaderboardId` see the [main repository](https://github.com/MBSck/advent-of-code)
+
+### 3. Execute script
+To automatically setup your (remote and local) Github repository for advent of code execute
 ```
-bash setup.sh
+python3 setup.py
 ```
-This will set up a Github repository one folder up from this
+This will set up a Github repository one folder up from this and will then push it to your
+Github
 
-The script will prompt you with:
+The script will ask you for:
 
-* An input for your **name**
-* An input for the **year**
-* An input for a **Github repository's SSH-address**
+* Your **name**
+* Your **Github token**
+* 
 
-### 3. Start with Advent of code. Enjoy!
+
+### 4. Start with AOC. Enjoy!
