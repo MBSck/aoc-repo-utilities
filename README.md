@@ -24,7 +24,9 @@ The script will ask you for:
 
 * Your **name**
 * Your **Github token**
-* 
+* Your **AOC-ID**
+* Your **AOC-Session-ID**
+* Your **AOC-Leaderboard-ID**
 
 
 ### 4. Start with AOC. Enjoy!
