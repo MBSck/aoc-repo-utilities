@@ -59,7 +59,7 @@ def call_setup_bash():
     name, login, repo = get_user_input_for_install(folder_name)
     subprocess.run(["bash", "create_repo.sh", name, folder_name], check=True)
     create_secrets_and_write_yaml(year, folder_name, login, repo)
-    subprocess.run(["bash", "git_push.sh", repo.ssh_url], check=True)
+    subprocess.run(["bash", "git_push.sh", "../"+folder_name, repo.ssh_url], check=True)
 
 
 if __name__ == "__main__":
