@@ -7,7 +7,6 @@ if importlib.util.find_spec("github") is None:
     subprocess.check_call(["clear"])
 
 
-import os
 import sys
 import subprocess
 

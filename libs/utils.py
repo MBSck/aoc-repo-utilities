@@ -8,8 +8,8 @@ import subprocess
 from typing import Optional
 from github import Github, AuthenticatedUser
 
-
-REPO_NAME = f"advent-of-code-{datetime.datetime.now().year}"
+YEAR = {datetime.datetime.now().year}
+REPO_NAME = f"advent-of-code-{YEAR}"
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
 
 
@@ -26,7 +26,7 @@ def get_repo_dir(repo_dir: Optional[Path] = None) -> str:
     """
     parent_dir = os.environ["HOME"]\
             if ((not repo_dir) or (not os.path.exists(repo_dir))) else repo_dir
-    return os.path.join(parent_dir, "Code", REPO_NAME)
+    return os.path.join(parent_dir, "Code/advent-of-code", REPO_NAME)
 
 
 def create_yaml(repo_dir: Path):
@@ -53,7 +53,8 @@ def create_readme(repo_dir: Path, login: str) -> None:
     """
     with open(os.path.join(ASSETS_DIR, "readme_template.md"), "r") as in_file,\
             open(os.path.join(repo_dir, "README.md"), "w+") as out_file:
-        out_file.write(f"{login}'s Advent of Code\n")
+        out_file.write(f"# {login}'s Advent of Code")
+        out_file.write("\n")
 
         for line in in_file:
             out_file.write(line)
@@ -151,7 +152,7 @@ def create_github_secrets(repo, login: str):
     repo.create_secret("AOC_USER_ID", user_id)
     repo.create_secret("AOC_LEADERBOARD_ID", leaderboard_id)
     repo.create_secret("AOC_SESSION", session_id)
-    repo.create_secret("AOC_YEAR", str(datetime.datetime.now().year))
+    repo.create_secret("AOC_YEAR", str(YEAR))
 
 
 def setup_remote() -> None:
@@ -171,7 +172,7 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
     ssh_url: str
     """
     git_init, git_add = ["git", "init"], ["git", "add", "."]
-    git_commit = ["git", "commit", "-m", '"Init commit"']
+    git_commit = ["git", "commit", "-m", "Init commit"]
     git_remote_add = ["git", "remote", "add", "origin", ssh_url]
     git_push = ["git", "push", "--set-upstream", "origin", "master"]
     commands = [git_init, git_add, git_commit, git_remote_add, git_push]
