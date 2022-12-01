@@ -170,14 +170,18 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
     repo_dir: Path
     ssh_url: str
     """
-    commands = [f"cd {repo_dir}", "git init",
-                "git add .", "git commit -m 'Init commit'",
-                f"git remote add origin {ssh_url}",
-                "git push --set-upstream origin master"]
+    cd, git_init = ["cd", repo_dir], ["git", "init"]
+    git_add = ["git", "add", "."]
+    git_commit = ["git", "commit", "-m", '"Init commit"']
+    git_remote_add = ["git", "remote", "add", "origin", ssh_url]
+    git_push = ["git", "push", "--set-upstream", "origin", "master"]
+    commands = [cd, git_init, git_add, git_commit, git_remote_add, git_push]
+
     for command in commands:
-        subprocess.call(command, shell=True)
+        subprocess.run(command, check=True)
 
 
 if __name__ == "__main__":
     print(get_repo_dir())
+    git_commit_and_push("", "")
 
