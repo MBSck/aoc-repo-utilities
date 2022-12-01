@@ -12,7 +12,7 @@ After doing this, follow the next steps in order
 
 ### 2. Create a Github token
 > #### :warning: Treat this token as a password, because it is! Save it encrypted! :warning:
-Click here for a step by step guide to create a Github-token: [Github token creating guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+##### Click here for a step by step guide to create a Github-token: [Github token creating guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 When creating a Token, make sure to...
 
@@ -24,14 +24,25 @@ When creating a Token, make sure to...
 
 Otherwise the script will not work
 
-### 3. Get Info from AOC-Website
+### 3. Create SSH-Key to access your repositories
+> ##### :warning: This needs to be done to pull from and push to **any** Github-repositories
+##### For this follow the steps to [generate an SSH-Key](https://docs.github.com/en/github-ae@latest/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+Sometimes the command
+```
+ssh-add ~/.ssh/id_github
+```
+needs to be added to the `~/.bashrc` or `~/.zshrc` to be called with shell start
+
+
+### 4. Get Info from AOC-Website
 Follow the steps in this repository [advent-readme-stars](https://github.com/k2bd/advent-readme-stars)
 to procure
 * The `userId`: https://github.com/k2bd/advent-readme-stars/#userid
 * The `sessionCookie`: https://github.com/k2bd/advent-readme-stars/#sessioncookie
 * For `leaderboardId` ask the creator of the private leaderboard
 
-### 4. Execute script
+### 5. Execute script
 To automatically setup your (remote and local) Github repository for advent of code execute
 ```
 python3 setup.py
@@ -41,7 +52,6 @@ Github
 
 The script will ask you for:
 
-* Your **Name**
 * Your **Github token**
 * Your **AOC-ID**
 * Your **AOC-Session-ID**
