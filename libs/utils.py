@@ -178,7 +178,10 @@ def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
     commands = [cd, git_init, git_add, git_commit, git_remote_add, git_push]
 
     for command in commands:
-        subprocess.run(command, check=True)
+        try:
+            subprocess.run(command, check=True)
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":
