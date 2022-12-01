@@ -113,7 +113,7 @@ def github_login():
 
     # NOTE: Lazyload of the user -> Avoids errors and makes API work?! WTF?!
     login = user.login
-    return user, github_token
+    return user
 
 
 def create_remote(user: AuthenticatedUser):
@@ -158,13 +158,13 @@ def create_github_secrets(repo, login: str):
 
 def setup_remote() -> None:
     """This sets the remote up for pushing"""
-    user, github_token = github_login()
+    user = github_login()
     repo = create_remote(user)
     create_github_secrets(repo, user.login)
-    return user.login, github_token
+    return user.login, repo
 
 
-def git_commit_and_push(repo_dir: Path, github_token: str, login: str) -> None:
+def git_commit_and_push(repo_dir: Path, ssh_url: str) -> None:
     """Commits and pushes the repository
 
     Parameters
@@ -174,9 +174,7 @@ def git_commit_and_push(repo_dir: Path, github_token: str, login: str) -> None:
     """
     git_init, git_add = ["git", "init"], ["git", "add", "."]
     git_commit = ["git", "commit", "-m", "Init commit"]
-    token_push = f"https://{github_token}@github.com/{login}/{REPO_NAME}.git"
-    print(token_push)
-    git_remote_add = ["git", "remote", "add", "origin", token_push]
+    git_remote_add = ["git", "remote", "add", "origin", ssh_url]
     git_push = ["git", "push", "--set-upstream", "origin", "master"]
     commands = [git_init, git_add, git_commit, git_remote_add, git_push]
 

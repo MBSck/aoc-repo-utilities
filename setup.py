@@ -16,9 +16,9 @@ from libs.utils import create_repository, setup_remote, git_commit_and_push
 
 
 def setup():
-    login, github_token = setup_remote()
+    login, repo = setup_remote()
     repo_dir = create_repository(login)
-    git_commit_and_push(repo_dir, github_token, login)
+    git_commit_and_push(repo_dir, repo.ssh_url)
 
 
 setup()
