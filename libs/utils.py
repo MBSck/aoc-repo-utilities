@@ -136,7 +136,7 @@ def create_remote(user: AuthenticatedUser):
     return repo
 
 
-def create_github_secrets(repo, login: str):
+def create_github_secrets(repo):
     """Creates the secrets for the Github repo from user input
 
     Parameters
@@ -145,8 +145,7 @@ def create_github_secrets(repo, login: str):
     login: str
         The nickname of the Github-account
     """
-    user_id = input("Enter your user-id (If left blank defaults to Github-username): ")
-    user_id = login if not user_id else user_id
+    user_id = input("Enter your user-id: ")
     session_id = input("Enter your session-id: ")
     leaderboard_id = input("Enter your leaderboard-id: ")
 
@@ -160,7 +159,7 @@ def setup_remote() -> None:
     """This sets the remote up for pushing"""
     user = github_login()
     repo = create_remote(user)
-    create_github_secrets(repo, user.login)
+    create_github_secrets(repo)
     return user.login, repo
 
 
